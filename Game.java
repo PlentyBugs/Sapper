@@ -2,15 +2,16 @@ package Sapper;
 
 public class Game {
 
-    public static final int SIZE = 40;
+    public static int SIZE = 40;
     public static int COUNT = (SIZE*SIZE)/Difficulty.INSANE.getI();
-    public static final Cell[][] field = new Cell[SIZE][SIZE];
-    public static final Cell[][] fieldWin = new Cell[SIZE][SIZE];
+    public static Cell[][] field = new Cell[SIZE][SIZE];
+    public static Cell[][] fieldWin = new Cell[SIZE][SIZE];
     public static boolean firstTouch = true;
+    public static Controller controller;
+    public static Window window;
 
     public static void main(String[] args){
-        generateField();
-        new Controller(new Window());
+        newGame(40, Difficulty.HARDCORE);
     }
 
     private static void generateField(){
@@ -61,5 +62,20 @@ public class Game {
                 field[y][x].setCountOfBombsAround(count);
             }
         }
+    }
+
+    public static void newGame(int SIZE, Difficulty difficulty){
+
+        Game.SIZE = SIZE;
+        COUNT = (SIZE*SIZE)/difficulty.getI();
+        field = new Cell[SIZE][SIZE];
+        fieldWin = new Cell[SIZE][SIZE];
+        firstTouch = true;
+        generateField();
+        if(window != null){
+            window.dispose();
+        }
+        window = new Window();
+        controller = new Controller(window);
     }
 }
